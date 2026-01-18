@@ -12,3 +12,4 @@ export * from './parts/parts.js';
 export * from './control/time.js';
 export * from './control/loop.js';
 export * from './stamp/stamp.js';
+export * from './lightboard/lightboard.js';
