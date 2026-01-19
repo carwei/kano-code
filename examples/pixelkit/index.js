@@ -8,13 +8,26 @@ import * as i18n from '../../i18n.js';
 import * as APIs from '../../toolbox.js';
 import { LocalStoragePlugin } from '../../dist/app/lib/storage/local-storage.js';
 import { Player } from '../../dist/app/lib/index.js';
-import { PixelKitOutputProfile } from '../../dist/app/lib/output/pixelkit.js';
 import { LightboardAPI } from '../../dist/app/lib/modules/lightboard/api.js';
 import { LightboardModule } from '../../dist/app/lib/modules/lightboard/lightboard.js';
+import { PixelKitOutputViewProvider } from '../../dist/app/lib/output/pixelkit.js';
 
 // Check for Web Serial support
 if (!('serial' in navigator)) {
     document.getElementById('browser-warning').classList.add('show');
+}
+
+/**
+ * Custom output profile for Pixel Kit - extends default and adds lightboard
+ */
+class PixelKitOutputProfile extends code.DefaultOutputProfile {
+    onInstall(output) {
+        super.onInstall(output);
+        // Add the lightboard module
+        this.modules.push(LightboardModule);
+        // Replace output view with Pixel Kit view
+        this.outputViewProvider = new PixelKitOutputViewProvider();
+    }
 }
 
 /**
@@ -61,7 +74,6 @@ i18n.load(lang, { blockly: true, kanoCodePath: '/' })
             // Log welcome message
             console.log('%c Kano Pixel Kit Editor ', 'background: #E91E63; color: white; font-size: 16px; padding: 4px 8px; border-radius: 4px;');
             console.log('Click "Connect Pixel Kit" to connect your device via USB.');
-            console.log('Make sure you have the correct drivers installed (FTDI or CP210x).');
         });
 
         editor.inject(document.body);
