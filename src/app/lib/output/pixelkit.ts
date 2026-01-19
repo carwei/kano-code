@@ -10,6 +10,8 @@ import { LightboardModule, LIGHTBOARD_WIDTH, LIGHTBOARD_HEIGHT, ILightboardFrame
 import { PixelKitDevice, PixelKitConnectionState } from '../devices/pixel-kit.js';
 import { EventEmitter, IDisposable } from '@kano/common/index.js';
 import { Microphone } from './microphone.js';
+import { DefaultResources } from './default-resources.js';
+import { PartsManager } from '../parts/manager.js';
 
 // Visual settings for the preview
 const PIXEL_SIZE = 20;
@@ -165,6 +167,10 @@ export class PixelKitOutputViewProvider implements IOutputProvider {
 
     onInstall(output: Output): void {
         this.output = output;
+        // Register resources (required for parts APIs like MouseAPI)
+        if (!output.outputResources) {
+            output.registerResources(new DefaultResources());
+        }
     }
 
     onInject(): void {
