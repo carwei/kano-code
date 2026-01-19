@@ -9,7 +9,6 @@ import * as APIs from '../../toolbox.js';
 import { LocalStoragePlugin } from '../../dist/app/lib/storage/local-storage.js';
 import { Player } from '../../dist/app/lib/index.js';
 import { LightboardAPI } from '../../dist/app/lib/modules/lightboard/api.js';
-import { LightboardModule } from '../../dist/app/lib/modules/lightboard/lightboard.js';
 import { PixelKitOutputViewProvider } from '../../dist/app/lib/output/pixelkit.js';
 
 // Check for Web Serial support
@@ -18,13 +17,12 @@ if (!('serial' in navigator)) {
 }
 
 /**
- * Custom output profile for Pixel Kit - extends default and adds lightboard
+ * Custom output profile for Pixel Kit - extends default and uses Pixel Kit view
  */
 class PixelKitOutputProfile extends code.DefaultOutputProfile {
     onInstall(output) {
         super.onInstall(output);
-        // Add the lightboard module
-        this.modules.push(LightboardModule);
+        // LightboardModule is already included via default modules
         // Replace output view with Pixel Kit view
         this.outputViewProvider = new PixelKitOutputViewProvider();
     }
