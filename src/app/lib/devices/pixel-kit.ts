@@ -80,16 +80,8 @@ export class PixelKitDevice implements IDisposable {
         try {
             this.setConnectionState(PixelKitConnectionState.Connecting);
 
-            // Request port from user
-            // Filter for common USB-to-serial chip vendor IDs (FTDI, CP210x, CH340)
-            this.port = await navigator.serial.requestPort({
-                filters: [
-                    { usbVendorId: 0x0403 }, // FTDI
-                    { usbVendorId: 0x10C4 }, // CP210x (Silicon Labs)
-                    { usbVendorId: 0x1A86 }, // CH340
-                    { usbVendorId: 0x303A }, // Espressif (ESP32)
-                ]
-            });
+            // Request port from user - no filter to show all available serial ports
+            this.port = await navigator.serial.requestPort();
 
             // Open the port with Pixel Kit settings
             await this.port.open({
